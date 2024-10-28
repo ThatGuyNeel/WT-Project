@@ -46,11 +46,144 @@
             <a href="Login.html">Employee Login</a> 
             <a href="https://www.inciflo.com">Inventory Management Guide</a> 
         </nav> 
+        <script>
+            function validateform()
+            {
+            var eid=document.getElementById("employee_id").value;
+            if(eid=="")
+            {
+                alert("Employee ID field cannot be left blank!);
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+            var fname=document.getElementById("firstname").value;
+            if(fname=="")
+            {
+                alert("First name cannot be left blank!);
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+            var lname=document.getElementById("lastname").value;
+            if(lname=="")
+            {
+                alert("Last name field cannot be left blank!);
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+            var emailid=document.getElementById("email").value;
+            if(email=="")
+            {
+                alert("Email field cannot be left blank!);
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+            var pswd=document.getElementById("password").value;
+            var passpattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
+            if(pswd.match(passpattern)) 
+            { 
+                return true;
+            }
+            else
+            { 
+                alert("Password entered should be of 6-20 characters, having at least one numeric digit, one uppercase and one lowercase letter");
+                return false;
+            }
+            var phno=document.getElementById("phone").value;
+            var x = /^[789]{1}[0-9]{9}$/;
+            if(x.test(phno)==false)
+            {
+                alert("Invalid phone number");
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+            var dob=document.getElementById("dob).value;
+            if(dob=="")
+            {
+                alert("Date of birth field cannot be left blank");
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+            var add=document.getElementById("address").value;
+            if(add=="")
+            {
+                alert("Address field cannot be left blank");
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+            var gender_selected="";
+            var gdr=document.getElementsByName("gender");
+            for(var i=0;i<gdr.length();i++)
+                {
+                    if(gdr[i].checked==true)
+                    {
+                        gender_selected=gdr[i].value;
+                    }
+                }
+            var hobbies=document.getElementsByName("hobbies");
+            var hob="";
+            for(var i=0;i<hobbies.length;i++)
+                {
+                    if(hobbies[i].checked==true)
+                    {
+                        hob+=" "+hobbies[i].value;
+                    }
+                }
+            var dept_selected="";
+            var d=document.getElementById("department");
+            var dept_selected=d.options[d.slectedIndex].value;
+            var fileInput = document.getElementById('profile_picture');
+            var filePath = fileInput.value;
+            var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+            if (!allowedExtensions.exec(filePath)) {
+                alert('Invalid file type');
+                fileInput.value = '';
+                return false;
+            } 
+           else 
+            {
+                // Image preview
+                if (fileInput.files && fileInput.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        document.getElementById('imagePreview').innerHTML = '<img src="' + e.target.result+ '"/>';
+                    };
+                    reader.readAsDataURL(fileInput.files[0]);
+                }
+            }
+           var color = document.getElementById("fav_color").value;
+            if (!color == "") 
+            {
+            alert("Please pick a colour.");
+            return false;
+            }
+            }
+        </script>
     </header> 
     <!-- Signup Form Section --> 
     <div class="container"> 
         <h2>Employee Signup Registration</h2> 
-        <form> 
+        <form onsubmit="return validateform()"> 
             <label for="employee_id">Employee ID:</label> 
             <input type="number" id="employee_id" name="employee_id"> 
  
