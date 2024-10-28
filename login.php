@@ -3,6 +3,7 @@
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username'];
     $password = $_POST['password'];
+    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
     
     // Database connection details
     $servername = "localhost";
@@ -18,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     
     // Simple query without prepared statements
-    $sql = "SELECT * FROM users WHERE username = '$username' AND password = '$password'";
+    $sql = "SELECT * FROM users WHERE username = '$username' AND password = '$hashed_password'";
     $result = mysqli_query($conn, $sql);
     
     // Check if login is successful
