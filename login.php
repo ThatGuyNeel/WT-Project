@@ -1,50 +1,59 @@
 <?php
+session_start();  
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username'];
     $password = $_POST['password'];
-    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
     
-    // Database connection details
-    $servername = "localhost";
-    $db_username = "root";
-    $db_password = "";
-    $dbname = "store_database";
+    include 'db_connection.php';
+
     
-    $conn = mysqli_connect($servername, $db_username, $db_password, $dbname);
-    
-    if (!$conn) {
-        echo "Could not connect to the database.";
-        exit;
+    $user_table = "CREATE TABLE IF NOT EXISTS Login (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        username VARCHAR(50) NOT NULL UNIQUE,  -- Ensure usernames are unique
+        password VARCHAR(255) NOT NULL
+    )";
+
+    if (mysqli_query($conn, $user_table)) {
+        
+    } else {
+        echo "<br>Failed to create 'Login' table: " . mysqli_error($conn);
     }
     
-    $user_table = "CREATE TABLE IF NOT EXISTS User (
-    username VARCHAR(50) NOT NULL,
-    password VARCHAR(20) NOT NULL,
-    )";
-    $r1=mysqli_query($conn,$user_table);
-	if($user_table)
-	{
-		echo "<br>'User' table created successfully";
-	}
-	else
-	{
-		echo "<br>Failed to create 'User' table";
-	}
-    // display
-    $sql = "SELECT * FROM User WHERE username = '$username' AND password = '$hashed_password'";
-    $result = mysqli_query($conn, $sql);
-    
-   /* // Check if login is successful
-    if (mysqli_num_rows($result) > 0) {
-        echo "<script>
-                alert('Login successful! Redirecting to employee records.');
-                window.open('employee_records.php', '_blank');
-              </script>";
+    $sql = "SELECT * FROM Login WHERE username = ?";
+    $stmt = mysqli_prepare($conn, $sql);
+
+    if ($stmt) {
+       
+        mysqli_stmt_bind_param($stmt, "s", $username);
+        
+       
+        mysqli_stmt_execute($stmt);
+        
+       
+        $result = mysqli_stmt_get_result($stmt);
+        
+       
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            if (password_verify($password, $row['password'])) {
+                $_SESSION['username'] = $username;  
+                header("Location: add_product.php");  
+                exit;  
+            } else {
+                echo "Invalid password.";
+            }
+        } else {
+            echo "No user found.";
+        }
+
+
+        mysqli_stmt_close($stmt);
     } else {
-        echo "<h2>Invalid username or password.</h2>";
-    } */
-    
+        echo "Failed to prepare the SQL statement: " . mysqli_error($conn);
+    }
+
+   
     mysqli_close($conn);
 }
 ?>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Product</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        form {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+        h1 {
+            text-align: center;
+        }
+        label {
+            display: block;
+            margin-top: 15px;
+        }
+        input[type="text"],
+        input[type="number"],
+        input[type="datetime-local"],
+        input[type="date"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        input[type="submit"],
+        input[type="reset"] {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            background-color: #28a745;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        input[type="reset"] {
+            background-color: #dc3545;
+        }
+        .radio-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 5px;
+        }
+    </style>
+    <script>
+        const suppliers = {
+            "Supplier A": "ID001",
+            "Supplier B": "ID002",
+            "Supplier C": "ID003",
+            "Supplier D": "ID004",
+            "Supplier E": "ID005"
+        };
+
+        function updateSupplierId() {
+            const supplierSelect = document.getElementById('supplier');
+            const supplierIdInput = document.getElementById('supplierId');
+            const selectedSupplier = supplierSelect.value;
+            supplierIdInput.value = suppliers[selectedSupplier] || "";
+        }
+
+        function setCurrentDateTime() {
+            const dateTimeField = document.getElementById('dateLoggedIn');
+            const now = new Date();
+            const formattedDateTime = now.toISOString().slice(0, 16);
+            dateTimeField.value = formattedDateTime;
+        }
+
+        function validateForm() {
+            const productName = document.getElementById('pname').value;
+            const retailPrice = document.getElementById('rprice').value;
+            const buyPrice = document.getElementById('bprice').value;
+            const quantity = document.getElementById('qty').value;
+
+            if (productName === "") {
+                alert("Product Name is required.");
+                return false;
+            }
+            if (retailPrice <= 0) {
+                alert("Retail Price should be greater than zero.");
+                return false;
+            }
+            if (buyPrice <= 0) {
+                alert("Buy Price should be greater than zero.");
+                return false;
+            }
+            if (quantity <= 0) {
+                alert("Quantity should be greater than zero.");
+                return false;
+            }
+            return true;
+        }
+
+        window.onload = function() {
+            setCurrentDateTime();
+            document.getElementById('supplier').addEventListener('change', updateSupplierId);
+        };
+    </script>
+</head>
+<body>
+    <form onsubmit="return validateForm()" action="add_product.php" method="POST">
+        <h1>Add New Product</h1>
+
+        <label for="product_id">Product ID (Auto-Generated):</label>
+        <input type="text" id="product_id" name="product_id" readonly value="PRD123">
+
+        <label for="pname">Product Name:</label>
+        <input type="text" id="pname" name="pname" required>
+
+        <label for="desc">Description:</label>
+        <textarea id="desc" name="desc" rows="4"></textarea>
+
+        <label for="rprice">Retail Price:</label>
+        <input type="number" id="rprice" name="rprice" required min="0.01" step="0.01">
+
+        <label for="bprice">Buy Price:</label>
+        <input type="number" id="bprice" name="bprice" required min="0.01" step="0.01">
+
+        <label for="qty">Quantity:</label>
+        <input type="number" id="qty" name="qty" required min="1">
+
+        <label for="supplier">Select Supplier:</label>
+        <select id="supplier" name="supplier" required>
+            <option value="" disabled selected>Select a supplier</option>
+            <option value="Supplier A">Supplier A</option>
+            <option value="Supplier B">Supplier B</option>
+            <option value="Supplier C">Supplier C</option>
+            <option value="Supplier D">Supplier D</option>
+            <option value="Supplier E">Supplier E</option>
+        </select>
+
+        <label for="supplierId">Supplier ID:</label>
+        <input type="text" id="supplierId" name="supplierId" readonly>
+
+        <label>Warehouse Location:</label>
+        <div class="radio-group">
+            <input type="radio" id="loc1" name="wareloc" value="Location A" required>
+            <label for="loc1">Location A</label>
+            <input type="radio" id="loc2" name="wareloc" value="Location B">
+            <label for="loc2">Location B</label>
+            <input type="radio" id="loc3" name="wareloc" value="Location C">
+            <label for="loc3">Location C</label>
+        </div>
+
+        <label for="dob">Expiration Date:</label>
+        <input type="date" id="dob" name="dob">
+
+        <label for="dateLoggedIn">Date Logged In:</label>
+        <input type="datetime-local" id="dateLoggedIn" name="dateLoggedIn" readonly>
+
+        <div class="button-container">
+            <input type="submit" value="Add">
+            <input type="reset" value="Reset">
+        </div>
+    </form>
+</body>
+</html>
