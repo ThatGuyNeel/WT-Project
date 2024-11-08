@@ -1,10 +1,14 @@
+<?php
+session_start();
+?>
+
 <!DOCTYPE html> 
 <html> 
 <head> 
     <title>Login</title> 
     <style> 
         body { 
-            background-image: url('bg2.png'); 
+            background-image: url('bg2.jpeg'); 
             background-repeat: no-repeat; 
             background-size: cover; 
             font-family: Arial, sans-serif; 
@@ -60,19 +64,23 @@
         <nav> 
             <a href="homepage.html">Home</a> 
             <a href="https://www.inciflo.com">Inventory Management Guide</a> 
-            <a href="Signup.html">Sign Up</a> 
+            <a href="Signup.html">Sign Up</a>
+            <?php if (isset($_SESSION['username'])): ?>
+                <a href="dashboard.php">Dashboard</a>
+            <?php endif; ?>
         </nav> 
     </header> 
+
     <!-- Login Form Section --> 
     <div class="container"> 
         <h2>Employee Login</h2> 
         <form action="login.php" method="post" onsubmit="return validateForm()"> 
             <p><label for="username">Username:</label> 
             <input type="text" id="username" name="username" required></p> 
- 
+
             <p><label for="password">Password:</label> 
             <input type="password" id="password" name="password" required></p> 
- 
+
             <input type="submit" value="Login"> 
             <input type="reset" value="Reset"> 
             <p> 
@@ -80,10 +88,11 @@
             </p> 
         </form> 
     </div> 
+
     <!-- Footer Section --> 
     <footer> 
         <p>&copy; 2024 Store Inc. | <a href="contact.html" style="color: yellow;">Contact Us</a></p> 
-        <a href="about.html" style="color: yellow;">About Us</a></p> 
+        <a href="about.html" style="color: yellow;">About Us</a>
     </footer> 
 </body> 
 </html>

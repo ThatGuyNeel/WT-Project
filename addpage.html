@@ -5,29 +5,69 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add New Product</title>
     <style>
+        /* Base Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            background-color: #f0f2f5;
             display: flex;
             justify-content: center;
-            align-items: center;
-            height: 100vh;
+            align-items: flex-start;
+            min-height: 100vh;
             margin: 0;
+            color: #333;
+            padding-top: 120px; /* Added space for the fixed header */
+            padding-bottom: 80px; /* Added space for the fixed footer */
         }
+
+        /* Form Container */
         form {
             background-color: white;
-            padding: 20px;
+            padding: 30px;
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            max-width: 400px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
             width: 100%;
         }
         h1 {
             text-align: center;
+            margin-bottom: 20px;
+            color: white;
         }
+
+        /* Header and Footer */
+        header, footer {
+            width: 100%;
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 15px;
+            position: fixed;
+            left: 0;
+            right: 0;
+        }
+        header {
+            top: 0;
+        }
+        footer {
+            bottom: 0;
+        }
+        nav a {
+            color: yellow;
+            text-decoration: none;
+            margin: 0 15px;
+        }
+
+        /* Form Elements */
         label {
             display: block;
             margin-top: 15px;
+            font-weight: bold;
+            color: #555;
         }
         input[type="text"],
         input[type="number"],
@@ -36,10 +76,11 @@
         select,
         textarea {
             width: 100%;
-            padding: 8px;
-            margin-top: 5px;
+            padding: 10px;
+            margin-top: 8px;
             border-radius: 4px;
             border: 1px solid #ccc;
+            font-size: 14px;
         }
         .button-container {
             text-align: center;
@@ -48,20 +89,33 @@
         input[type="submit"],
         input[type="reset"] {
             padding: 10px 20px;
-            margin: 5px;
+            margin: 10px;
             border: none;
             background-color: #28a745;
             color: white;
             border-radius: 4px;
             cursor: pointer;
+            transition: background-color 0.3s ease;
         }
         input[type="reset"] {
             background-color: #dc3545;
         }
+        input[type="submit"]:hover {
+            background-color: #218838;
+        }
+        input[type="reset"]:hover {
+            background-color: #c82333;
+        }
+
+        /* Radio Group */
         .radio-group {
             display: flex;
-            gap: 10px;
-            margin-top: 5px;
+            gap: 15px;
+            margin-top: 8px;
+        }
+        .radio-group label {
+            font-weight: normal;
+            color: #666;
         }
     </style>
     <script>
@@ -109,6 +163,12 @@
                 alert("Quantity should be greater than zero.");
                 return false;
             }
+		    const servicesCheckboxes = document.querySelectorAll("input[name='services[]']");
+            const isChecked = Array.from(servicesCheckboxes).some(checkbox => checkbox.checked);
+            if (!isChecked) {
+                alert("Please select at least one additional service.");
+                return false;
+            }
             return true;
         }
 
@@ -119,12 +179,21 @@
     </script>
 </head>
 <body>
-    <form onsubmit="return validateForm()" action="add_product.php" method="POST">
+    <header>
+        <h1>Store Inventory</h1>
+        <nav>
+            <a href="homepage.html">Home</a>
+            <a href="https://www.inciflo.com">Inventory Management Guide</a>
+            <a href="Signup.html">Sign Up</a>
+            <?php if (isset($_SESSION['username'])): ?>
+                <a href="dashboard.php">Dashboard</a>
+                <a href="logout.php" class="logout-button">Logout</a>
+            <?php endif; ?>
+        </nav>
+    </header>
+    
+    <form onsubmit="return validateForm()" action="addpage.php" method="POST">
         <h1>Add New Product</h1>
-
-        <label for="product_id">Product ID (Auto-Generated):</label>
-        <input type="text" id="product_id" name="product_id" readonly value="PRD123">
-
         <label for="pname">Product Name:</label>
         <input type="text" id="pname" name="pname" required>
 
@@ -163,16 +232,30 @@
             <label for="loc3">Location C</label>
         </div>
 
-        <label for="dob">Expiration Date:</label>
+        <label for="dob">Holding till:</label>
         <input type="date" id="dob" name="dob">
 
         <label for="dateLoggedIn">Date Logged In:</label>
         <input type="datetime-local" id="dateLoggedIn" name="dateLoggedIn" readonly>
-
+		
+		<label>Additional Services:</label>
+        <div>
+            <input type="checkbox" id="refrigeration" name="services[]" value="Needs Refrigeration">
+            <label for="refrigeration">Needs Refrigeration</label>
+			<input type="checkbox" id="special-handling" name="services[]" value="Special Handling">
+            <label for="special-handling">Special Handling</label>
+            <input type="checkbox" id="fragile" name="services[]" value="Fragile">
+            <label for="fragile">Fragile</label>
+            <input type="checkbox" id="gift-wrapping" name="services[]" value="Gift Wrapping">
+            <label for="gift-wrapping">Gift Wrapping</label>
+		</div>
         <div class="button-container">
             <input type="submit" value="Add">
             <input type="reset" value="Reset">
         </div>
     </form>
-</body>
-</html>
+
+    <footer>
+        <p>&copy; 2024 Store Inc. | <a href="contact.html" style="color: yellow;">Contact Us</a></p>
+        <a href="about.html" style="color: yellow;">About Us</a>
+    </footer>

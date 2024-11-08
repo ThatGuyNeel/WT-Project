@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Database connection
     include 'db_connection.php';
     // Insert data into the Product table
-    $sql = "INSERT INTO Product (pname, description, retail_price, buy_price, quantity, supplier, supplier_id, warehouse_location, expiration_date, date_logged_in)
+    $sql = "INSERT INTO product (pname, description, retail_price, buy_price, quantity, supplier, supplier_id, warehouse_location, expiration_date, date_logged_in)
             VALUES ('$pname', '$desc', '$rprice', '$bprice', '$qty', '$supplier', '$supplierId', '$wareloc', '$dob', '$dateLoggedIn')";
 
     if ($conn->query($sql) === TRUE) {
@@ -40,7 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Close the connection
     $conn->close();
 } else {
-    header("Location: add_product_form.php"); // Redirect to form page
+    header("Location: addpage.html"); // Redirect to form page
     exit();
 }
 ?>

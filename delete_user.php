@@ -1,12 +1,11 @@
 <?php
-// Check if ID is set
-if (isset($_GET['id'])) {
-    $id = $_GET['id'];
+if (isset($_GET['employee_id'])) {
+    $employee_id = $_GET['employee_id'];
 
     // Database connection
     include 'db_connection.php';
     // Delete user data
-    $sql = "DELETE FROM users WHERE id='$id'";
+    $sql = "DELETE FROM user WHERE employee_id='$employee_id'";
 
     if ($conn->query($sql) === TRUE) {
         echo "User deleted successfully! <a href='dashboard.php'>Go to Dashboard</a>";
